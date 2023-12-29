@@ -21,13 +21,21 @@ function App() {
     newStatic(sudoku);
   }, []);
 
-  const newStatic = () => {
-    setStaticSudoku(JSON.parse(JSON.stringify(sudoku)));
-  }
+  const newStatic = (newSudoku) => {
+    setStaticSudoku(JSON.parse(JSON.stringify(newSudoku)));
+  };
+
+  const restartGame = () => {
+    const newSudoku = generateSudoku();
+    setSudoku(newSudoku);
+    setIsValid(false);
+    newStatic(newSudoku);
+  };
 
   return (
     <div className="App">
       <h1>Sudoku</h1>
+      <button onClick={restartGame}>Restart</button>
       <SudokuGrid sudoku={sudoku} onChange={handleCellChange} isDisabled={(row, col) => staticSudoku[row][col] !== 0}/>
     </div>
   );

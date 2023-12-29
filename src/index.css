@@ -21,6 +21,24 @@ input[type=number]::-webkit-outer-spin-button {
   text-align: center;
 }
 
+.App button {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.App button:hover {
+  background-color: #0056b3;
+}
+
+.App button:active {
+  background-color: #004085;
+}
+
 .sudoku-grid {
   margin: 0 auto;
   border-collapse: collapse;
