@@ -28,18 +28,28 @@ const SudokuCell = ({ value, onChange, isDisabled }) => {
   const inputDisabled = isDisabled ? { disabled: true } : {};
 
   const handleInputChange = (e) => {
-    console.log(e);
     const input = e.target.value;
+    console.log('User input received');
+    console.log(input);
     // 移除非数字字符
     const number = input.replace(/[^0-9]/g, '');
 
-    console.log(number);
     // 检查数字是否在1到9之间
     if (number.length === 1 && number >= 1 && number <= 9) {
+      console.log('Valid Input');
+      console.log(number);
       onChange(number);
     } else {
       // 如果输入无效，清除输入框
       e.target.value = '';
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Backspace' || e.key === 'Delete') {
+      // 如果用户按下删除键，清除输入框
+      e.target.value = '';
+      onChange(0);
     }
   };
 
@@ -50,6 +60,7 @@ const SudokuCell = ({ value, onChange, isDisabled }) => {
         type="number"
         value=""
         onChange={(e) => handleInputChange(e)}
+        onKeyDown={(e) => handleKeyDown(e)}
         style={{ width: '30px', height: '30px', textAlign: 'center' }}
         {...inputDisabled}
       />
@@ -60,7 +71,8 @@ const SudokuCell = ({ value, onChange, isDisabled }) => {
     <input
       type="number"
       value={value}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={(e) => handleInputChange(e)}
+      onKeyDown={(e) => handleKeyDown(e)}
       min="1"
       max="9"
       maxLength="1"
