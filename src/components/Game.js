@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import SudokuGrid from "./SudokuGrid";
 import { checkSudoku, generateSudoku } from "./Utils";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 
 function Game() {
+  const params = useParams();
+  const id = params.id;
   const [staticSudoku, setStaticSudoku] = useState([]);
   const [history, setHistory] = useState(() => {
+    // TODO: Fetch history data from KV and restore the whole game
+
     let history = [];
     let s = generateSudoku();
     history.push(s);
@@ -14,21 +19,20 @@ function Game() {
   });
   const [current, setCurrent] = useState(0);
   const [isValid, setIsValid] = useState(false);
+  const navigate = useNavigate();
 
-  const params = useParams();
-  const id = params.id;
-
-  // Change Handling
+  // Change Handler
   const handleCellChange = (value, row, col) => {
     let sudoku = history[current];
     const newSudoku = JSON.parse(JSON.stringify(sudoku));
     newSudoku[row][col] = parseInt(value);
     let newHistory = history.slice(0, current + 1);
     newHistory.push(newSudoku);
+    
     setHistory(newHistory);
   };
 
-  // Hooks
+  // Hooks Effect
   useEffect(() => {
     setCurrent(history.length - 1);
   }, [history]);
@@ -37,11 +41,14 @@ function Game() {
     console.log("current pointer is changed!")
   }, [current]);
 
-  // Button Reactions
+  // Button Handler
   const newGame = () => {
-    const newSudoku = generateSudoku();
-    setStaticSudoku(JSON.parse(JSON.stringify(newSudoku)));
-    setHistory([newSudoku]);
+    const new_id = uuidv4();
+    navigate(`/game/${new_id}`);
+    window.location.reload();
+    // const newSudoku = generateSudoku();
+    // setStaticSudoku(JSON.parse(JSON.stringify(newSudoku)));
+    // setHistory([newSudoku]);
   };
 
   const clearBoard = () => {
