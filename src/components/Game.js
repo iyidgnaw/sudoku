@@ -8,10 +8,16 @@ function Game() {
   const params = useParams();
   const id = params.id;
   const [staticSudoku, setStaticSudoku] = useState([]);
-  const [history, setHistory] = useState(async () => {
+  const [history, setHistory] = useState(() => {
     // TODO: Fetch history data from KV and restore the whole game
-    let data = await getData(id);
-    console.log(data);
+    getData(id).then((data) => {
+      if (data === null) {
+        console.log("No data found for " + id);
+      } else {
+        setHistory(data);
+        setStaticSudoku(JSON.parse(JSON.stringify(data[0])));
+      }
+    });
 
     let history = [];
     let s = generateSudoku();

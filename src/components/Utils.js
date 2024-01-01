@@ -6,11 +6,10 @@ export async function getData (key) {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      },
-      credentials: 'include',
+      }
     });
     if (!response.ok) {
-      throw new Error('Failed to fetch value');
+      return null;
     }
     const data = await response.json();
     console.log('Value retrieved:', data);
