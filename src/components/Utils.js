@@ -1,9 +1,29 @@
-export function generateSudoku() {
-  var sudoku = require("sudoku");
+import { getSudoku } from 'sudoku-gen';
 
-  const solution = convertTo2DArray(sudoku.makepuzzle());
+export function generateSudoku() {
+  // var sudoku = require("sudoku");
+  // const solution = convertTo2DArray(sudoku.makepuzzle());
+
+  const sudoku = getSudoku('easy');
+  const solution = convertTo2DArraySudokuGen(sudoku.puzzle);
 
   return solution;
+}
+
+function convertTo2DArraySudokuGen(sudoku) {
+  const rows = 9;
+  const cols = 9;
+  const twoDArray = [];
+
+  for (let i = 0; i < rows; i++) {
+    twoDArray[i] = [];
+    for (let j = 0; j < cols; j++) {
+      twoDArray[i][j] =
+      sudoku.charAt(i * cols + j) === '-' ? 0 : sudoku.charAt(i * cols + j);
+    }
+  }
+
+  return twoDArray; 
 }
 
 function convertTo2DArray(oneDArray) {
@@ -63,5 +83,13 @@ export function checkSudoku(sudoku) {
     }
   }
 
-  return true;
+  let count = 0;
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (sudoku[i][j] !== 0) {
+        count++;
+      }
+    }
+  }
+  return count === 81;
 }

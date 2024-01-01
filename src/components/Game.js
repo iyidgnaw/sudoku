@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SudokuGrid from "./SudokuGrid";
-import { generateSudoku } from "./Utils";
+import { checkSudoku, generateSudoku } from "./Utils";
 import { useParams } from "react-router-dom";
 
 function Game() {
@@ -35,15 +35,27 @@ function Game() {
 
   useEffect(() => {
     console.log("current pointer is changed!")
-    console.log(current);
-    console.log(history[current]);
   }, [current]);
 
   // Button Reactions
-  const restartGame = () => {
+  const newGame = () => {
     const newSudoku = generateSudoku();
     setStaticSudoku(JSON.parse(JSON.stringify(newSudoku)));
     setHistory([newSudoku]);
+  };
+
+  const clearBoard = () => {
+    setHistory([staticSudoku]);
+  };
+
+  const check = () => {
+    let res = checkSudoku(history[current]);
+    setIsValid(res);
+    if (res) {
+        alert("Congrats! You've completed the puzzle!");
+    } else {
+        alert("Not there yet. Keep going.")
+    }
   };
 
   const backwards = () => {
@@ -59,14 +71,16 @@ function Game() {
       <h1>Sudoku</h1>
       <h3>Session Id: {id}</h3>
       <h3>Steps recorded: {history.length}</h3>
-      <button onClick={restartGame}>Restart</button>
-      <button onClick={backwards}>Step Back</button>
-      <button onClick={forwards}>Continue</button>
+      <button onClick={newGame}>NewGame</button>
+      <button onClick={clearBoard}>Restart</button>
+      <button onClick={check}>Check</button> 
       <SudokuGrid
         sudoku={current >= history.length ? history[history.length - 1] : history[current]}
         onChange={handleCellChange}
         isDisabled={(row, col) => staticSudoku[row][col] !== 0}
       />
+      <button onClick={backwards}>Step Back</button>
+      <button onClick={forwards}>Step Forward</button>
     </div>
   );
 }
