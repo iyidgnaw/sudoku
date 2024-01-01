@@ -1,5 +1,49 @@
 import { getSudoku } from 'sudoku-gen';
 
+export async function getData (key) {
+  try {
+    const response = await fetch('https://sudoku-master-backend.vercel.app/api/store?key=' + key, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch value');
+    }
+    const data = await response.json();
+    console.log('Value retrieved:', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching value:', error);
+  }
+};
+
+export async function setData(key, value) {
+  try {
+    const body = {
+      "key": key,
+      "value": value,
+    };
+    const response = await fetch('https://sudoku-master-backend.vercel.app/api/store', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to save value');
+    }
+    const data = await response.json();
+    console.log('Value saved:', data);
+  } catch (error) {
+    console.error('Error saving value:', error);
+  }
+}
+
+
 export function generateSudoku() {
   // var sudoku = require("sudoku");
   // const solution = convertTo2DArray(sudoku.makepuzzle());

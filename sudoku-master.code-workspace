@@ -5,6 +5,9 @@
         },
         {
             "path": "../sudoku-classroom"
+        },
+        {
+            "path": "../sudoku-master-backend"
         }
     ]
 }

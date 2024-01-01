@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SudokuGrid from "./SudokuGrid";
-import { checkSudoku, generateSudoku } from "./Utils";
+import { checkSudoku, generateSudoku, getData, setData } from "./Utils";
 import { useNavigate, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -8,8 +8,10 @@ function Game() {
   const params = useParams();
   const id = params.id;
   const [staticSudoku, setStaticSudoku] = useState([]);
-  const [history, setHistory] = useState(() => {
+  const [history, setHistory] = useState(async () => {
     // TODO: Fetch history data from KV and restore the whole game
+    let data = await getData(id);
+    console.log(data);
 
     let history = [];
     let s = generateSudoku();
@@ -30,6 +32,9 @@ function Game() {
     newHistory.push(newSudoku);
     
     setHistory(newHistory);
+    setData(id, newHistory).then(() => {
+        console.log("History saved");
+    });
   };
 
   // Hooks Effect
