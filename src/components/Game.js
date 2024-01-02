@@ -14,8 +14,12 @@ function Game() {
       if (data === null) {
         console.log("No data found for " + id);
       } else {
+        console.log(data);
         setHistory(data);
         setStaticSudoku(JSON.parse(JSON.stringify(data[0])));
+        if (checkSudoku(data[data.length-1])) {
+          alert("Welcome back! You've completed the puzzle last time!");
+        }
       }
     });
 
