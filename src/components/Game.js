@@ -3,6 +3,7 @@ import SudokuGrid from "./SudokuGrid";
 import { checkSudoku, generateSudoku, getData, setData } from "./Utils";
 import { useNavigate, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
+import Loading from "./Loading";
 
 function Game() {
   const params = useParams();
@@ -21,6 +22,7 @@ function Game() {
           alert("Welcome back! You've completed the puzzle last time!");
         }
       }
+      setIsLoaded(true);
     });
 
     let history = [];
@@ -31,6 +33,7 @@ function Game() {
   });
   const [current, setCurrent] = useState(0);
   const [isValid, setIsValid] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const navigate = useNavigate();
 
   // Change Handler
@@ -88,23 +91,29 @@ function Game() {
     setCurrent(current < history.length - 1 ? current + 1 : current);
   };
 
-  return (
-    <div className="App">
-      <h1>Sudoku</h1>
-      <h3>Session Id: {id}</h3>
-      <h3>Steps recorded: {history.length}</h3>
-      <button onClick={newGame}>NewGame</button>
-      <button onClick={clearBoard}>StartOver</button>
-      <button onClick={check}>Check</button> 
-      <SudokuGrid
-        sudoku={current >= history.length ? history[history.length - 1] : history[current]}
-        onChange={handleCellChange}
-        isDisabled={(row, col) => staticSudoku[row][col] !== 0}
-      />
-      <button onClick={backwards}>Step Back</button>
-      <button onClick={forwards}>Step Forward</button>
-    </div>
-  );
+  if (isLoaded) {
+    return (
+      <div className="App">
+        <h1>Sudoku</h1>
+        <h3>Session Id: {id}</h3>
+        <h3>Steps recorded: {history.length}</h3>
+        <button onClick={newGame}>NewGame</button>
+        <button onClick={clearBoard}>StartOver</button>
+        <button onClick={check}>Check</button> 
+        <SudokuGrid
+          sudoku={current >= history.length ? history[history.length - 1] : history[current]}
+          onChange={handleCellChange}
+          isDisabled={(row, col) => staticSudoku[row][col] !== 0}
+        />
+        <button onClick={backwards}>Step Back</button>
+        <button onClick={forwards}>Step Forward</button>
+      </div>
+    );
+  } else {
+    return <Loading/>;
+  }
+
+  
 }
 
 export default Game;
