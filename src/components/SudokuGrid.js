@@ -9,7 +9,7 @@ const SudokuGrid = ({ sudoku, onChange, isDisabled }) => {
         {sudoku.map((row, rowIndex) => (
           <tr key={rowIndex} className={`sudoku-row ${rowIndex % 3 === 2 ? 'sudoku-row-3' : ''}`}>
             {row.map((cell, colIndex) => (
-              <td key={`${rowIndex}-${colIndex}`} className={`sudoku-cell ${colIndex % 3 === 2 ? 'sudoku-cell-3' : ''}`}>
+              <td key={`${rowIndex}-${colIndex}`} className={`${colIndex % 3 === 2 ? 'sudoku-cell-3' : 'sudoku-cell'}`}>
                 <SudokuCell
                   value={cell}
                   onChange={(value) => onChange(value, rowIndex, colIndex)}

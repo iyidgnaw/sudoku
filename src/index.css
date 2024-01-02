@@ -39,13 +39,14 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #004085;
 }
 
+/* Sudoku Entity CSS*/
+
 .sudoku-grid {
   margin: 0 auto;
   border-collapse: collapse;
 }
 
 .sudoku-grid td {
-  border: 1px solid #000; /* 为单元格添加边框 */
   width: 30px; /* 设置单元格宽度 */
   height: 30px; /* 设置单元格高度 */
   text-align: center; /* 使内容居中 */
@@ -55,22 +56,8 @@ input[type=number]::-webkit-outer-spin-button {
   border-top: 2px solid #000; /* 为第一行添加更粗的顶部边框 */
 }
 
-.sudoku-grid td:first-child,
-.sudoku-grid td:nth-child(3n) {
-  border-left: 2px solid #000; /* 为第一列和每三列添加更粗的左侧边框 */
-}
-
-.sudoku-grid td:nth-child(3n + 1),
-.sudoku-grid td:nth-child(3n + 2),
-.sudoku-grid td:nth-child(3n + 3) {
-  border-right: 2px solid #000; /* 为每三列添加更粗的右侧边框 */
-}
-
-.sudoku-grid tr:nth-child(3n) {
-  border-bottom: 2px solid #000; /* 为每三行添加更粗的底部边框 */
-}
-
 .sudoku-row {
+  border-left: 2px solid #000;
   border-bottom: 1px solid #000;
 }
 
@@ -86,18 +73,13 @@ input[type=number]::-webkit-outer-spin-button {
   border-right: 2px solid #000;
 }
 
-
-.sudoku-cell input {
+input {
   width: 100%;
   height: 100%;
   text-align: center;
   border: none;
   outline: none;
   font-size: 18px;
-}
-
-.sudoku-cell input:disabled {
-  background-color: #ddd;
 }
 
 /* Loading Page CSS */

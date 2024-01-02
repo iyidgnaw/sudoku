@@ -95,7 +95,6 @@ function Game() {
     return (
       <div className="App">
         <h1>Sudoku</h1>
-        <h3>Session Id: {id}</h3>
         <h3>Steps recorded: {history.length}</h3>
         <button onClick={newGame}>NewGame</button>
         <button onClick={clearBoard}>StartOver</button>
