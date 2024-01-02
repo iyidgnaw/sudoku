@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SudokuGrid from "./SudokuGrid";
-import { checkSudoku, generateSudoku, getData, setData } from "./Utils";
+import { checkSudoku, generateSudoku, getData, highLight, instantCheck, setData } from "./Utils";
 import { useNavigate, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
 import Loading from "./Loading";
@@ -48,7 +48,13 @@ function Game() {
     setData(id, newHistory).then(() => {
         console.log("History saved");
     });
+    let [res, reason, loc] = instantCheck(newHistory[newHistory.length - 1]);
+    highLight(res, reason, loc);
   };
+
+  
+
+  
 
   // Hooks Effect
   useEffect(() => {

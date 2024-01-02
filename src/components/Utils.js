@@ -62,7 +62,7 @@ function convertTo2DArraySudokuGen(sudoku) {
     twoDArray[i] = [];
     for (let j = 0; j < cols; j++) {
       twoDArray[i][j] =
-      sudoku.charAt(i * cols + j) === '-' ? 0 : sudoku.charAt(i * cols + j);
+      sudoku.charAt(i * cols + j) === '-' ? 0 : parseInt(sudoku.charAt(i * cols + j));
     }
   }
 
@@ -135,4 +135,112 @@ export function checkSudoku(sudoku) {
     }
   }
   return count === 81;
+}
+
+export function instantCheck(sudoku) {
+  // 检查每一行
+  for (let i = 0; i < 9; i++) {
+    const row = new Set();
+    for (let j = 0; j < 9; j++) {
+      if (sudoku[i][j] === '0' || sudoku[i][j] === 0) {
+        continue;
+      }
+      if (!row.has(sudoku[i][j])) {
+        row.add(sudoku[i][j]);
+      } else {
+        return [false, 'row', [i, j]];
+      }
+    }
+  }
+
+  // 检查每一列
+  for (let j = 0; j < 9; j++) {
+    const col = new Set();
+    for (let i = 0; i < 9; i++) {
+      if (sudoku[i][j] === '0' || sudoku[i][j] === 0) {
+        continue;
+      }
+      if (!col.has(sudoku[i][j])) {
+        col.add(sudoku[i][j]);
+      } else {
+        return [false, 'col', [i, j]];
+      }
+    }
+  }
+
+  // 检查每一个3x3宫格
+  const boxMap =  new Map();
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      boxMap.set([i,j].toString(), new Set());
+    }
+  }
+
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (sudoku[i][j] === '0' || sudoku[i][j] === 0) {
+        continue;
+      }
+      const box = boxMap.get([Math.floor(i/3),Math.floor(j/3)].toString());
+      if (!box.has(sudoku[i][j])) {
+        box.add(sudoku[i][j]);
+      } else {
+        return [false, 'box', [i, j]];
+      }
+    }
+  }
+
+  let count = 0;
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (sudoku[i][j] !== 0) {
+        count++;
+      }
+    }
+  }
+  return [count === 81, 'incomplete', []];
+}
+
+
+export function highLight(res, reason, loc) {
+  if (!res) {
+    console.log(loc);
+    if (reason === 'row') {
+      console.log('Row Error');
+      for (const element of document.getElementsByClassName(`row-${loc[0]}`)) {
+        blink(element);
+      }
+    } else if (reason === 'col') {
+      console.log('Col Error');
+      for (const element of document.getElementsByClassName(`col-${loc[1]}`)) {
+        blink(element);
+      }
+    } else if (reason === 'box') {
+      console.log('Box Error');
+      for (const element of document.getElementsByClassName(`cell-${Math.floor(loc[0]/3)}-${Math.floor(loc[1]/3)}`)) {
+        blink(element);
+      }
+    } else {
+      console.log(reason);
+    }
+  }
+}
+
+export function blink(elem) {
+  elem.style = 'border: 2px solid red';
+
+  setTimeout(() => {
+    elem.style = '';
+
+    setTimeout(() => {
+      elem.style = 'border: 2px solid red';
+
+      setTimeout(() => {
+        elem.style = '';
+      }, 500);
+
+    }, 500);
+
+  }, 500);
+
 }
