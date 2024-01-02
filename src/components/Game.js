@@ -90,7 +90,7 @@ function Game() {
       <h3>Session Id: {id}</h3>
       <h3>Steps recorded: {history.length}</h3>
       <button onClick={newGame}>NewGame</button>
-      <button onClick={clearBoard}>Restart</button>
+      <button onClick={clearBoard}>StartOver</button>
       <button onClick={check}>Check</button> 
       <SudokuGrid
         sudoku={current >= history.length ? history[history.length - 1] : history[current]}

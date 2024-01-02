@@ -2,7 +2,7 @@ import { getSudoku } from 'sudoku-gen';
 
 export async function getData (key) {
   try {
-    const response = await fetch('https://sudoku-master-backend.vercel.app/api/store?key=' + key, {
+    const response = await fetch('http://localhost:3000/api/store?key=' + key, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ export async function setData(key, value) {
       "key": key,
       "value": value,
     };
-    const response = await fetch('https://sudoku-master-backend.vercel.app/api/store', {
+    const response = await fetch('http://localhost:3000/api/store', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
